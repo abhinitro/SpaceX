@@ -22,6 +22,7 @@ class Home extends Component {
       year: "",
       launch: "",
       landing: "",
+      loader:false
 
 
 
@@ -35,43 +36,40 @@ class Home extends Component {
 
     const { getList } = this.props;
     let url = BASE_URL + '?limit=100';
-
     let query =Router.query;
+
+    let obj={};
+
+    if(query.hasOwnProperty('launch_year')){
+        obj['year']=query.launch_year;
+        url+='&launch_year='+query.launch_year;
+    }
+     if(query.hasOwnProperty('launch_success')){
+      obj['launch']=query.launch_success=="true"?true:false;
+      url+='&launch_success='+query.launch_success;
+    }
+     if(query.hasOwnProperty('land_success')){
+      obj['landing']=query.land_success=="true"?true:false;
+      url+='&land_success='+query.land_success;
+
+    }
+
 
     let thisKey=this;
 
-    console.log({query});
+    thisKey.setState(obj);
+
     axios.get(url)
       .then(function (response) {
-
-
-        getList(response.data);
-      
-
-        let obj={};
-
-        if(query.hasOwnProperty('launch_year')){
-            obj['year']=query.launch_year;
-        }
-         if(query.hasOwnProperty('launch_success')){
-          obj['launch']=query.launch_success;
-        }
-         if(query.hasOwnProperty('land_success')){
-          obj['landing']=query.land_success;
-        }
-
-       // console.log({obj,query});
-
-      // thisKey.setState(obj);
-
-
-      })
+          getList(response.data);
+       })
       .catch(function (error) {
 
       })
   }
 
 
+  
   getListofSpaceX(url) {
 
     const { getList } = this.props;
@@ -94,13 +92,13 @@ class Home extends Component {
     queryParam['launch_year']=data;
 
 
-    if(this.state.launch !=""){
+    if(typeof this.state.launch =="boolean"){
       url += '&launch_success=' + this.state.launch;
       queryParam['launch_success']=this.state.launch;
      
     }
     
-    if(this.state.landing !=""){
+    if(typeof this.state.landing =="boolean"){
       url += '&land_success=' + this.state.landing;
       queryParam['land_success']=this.state.landing;
    }
@@ -125,12 +123,12 @@ class Home extends Component {
     let queryParam={};
     queryParam['land_success']=data;
 
-   if(this.state.year !=""){
+   if(typeof this.state.year =="string" &&  this.state.year !=""){
       url += '&launch_year=' + this.state.year;
       queryParam['launch_year']=this.state.year;
     }
     
-    if(this.state.launch !=""){
+    if(typeof this.state.launch =="boolean"){
       url += '&launch_success=' + this.state.launch;
       queryParam['launch_success']=this.state.launch;
      
@@ -144,13 +142,13 @@ class Home extends Component {
     this.setState({ landing: data });
   }
 
-  setLaunch(data) {
+  async setLaunch(data) {
  
   let url = BASE_URL + '?limit=100';
   url += '&launch_success=' + data;
   let queryParam={};
   queryParam['launch_success']=data;
-  if(typeof this.state.year !="string"){
+  if(typeof this.state.year =="string" &&  this.state.year !=""){
     url += '&launch_year=' + this.state.year;
     queryParam['launch_year']=this.state.year;
   }
@@ -163,19 +161,18 @@ class Home extends Component {
    Router.push({
      pathname: '/',
      query: queryParam ,
-});
+   });
 
-    this.getListofSpaceX(url);
+    await this.getListofSpaceX(url);
 
 
-    this.setState({ launch: data });
+    this.setState({ launch: data,loader:false });
   }
 
   render() {
 
     const { data } = this.props;
 
-    console.log({data});
 
     return (
       <div >
@@ -193,7 +190,13 @@ class Home extends Component {
             </Col>
 
             <Col md="8" className="">
-              {typeof data == "undefined" ? (<div>Loading.....</div>) : (<Programs data={data} />)}
+              {
+                
+                this.state.loader?"Loading...":
+                typeof data == "undefined" ? (<div>Loading.....</div>) : (<Programs data={data} />)
+                
+                
+                }
             </Col>
 
           </Row>
