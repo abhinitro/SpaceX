@@ -32,8 +32,19 @@ body{
     background-color: white;
     /* min-width: 368px; */
     flex: 0 0 22%;
+    height: 50%;
 }
 
+footer{
+
+     text-align: center;
+    padding-top: 14px;
+
+
+}
+.text-muted {
+    color: black !important;
+}
 hr {
     margin-top: 1rem;
     margin-bottom: 1rem;

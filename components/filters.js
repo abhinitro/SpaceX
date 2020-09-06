@@ -43,7 +43,7 @@ class Filter extends Component {
        let str=[];
        let years=[];
        
-       for(let i=2006;i<2020;i++){
+       for(let i=2006;i<=2020;i++){
 
            let className="btn btn-success inline_button";
 
@@ -56,6 +56,12 @@ class Filter extends Component {
            str.push(
             <button className={className}    onClick={()=>{this.setButton(i);}}>{i}</button>
           );
+
+          if(i==2020){
+            str.push(
+                <div className="btn inline_button"  ></div>
+              );
+          }
        }
 
      return str;

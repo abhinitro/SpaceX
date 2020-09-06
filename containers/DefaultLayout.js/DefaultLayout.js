@@ -17,6 +17,12 @@ export default class DefaultLayout extends Component {
           <div className="container-fluid">
            {this.props.children}  
          </div>
+         <br/>
+         <footer class="footer">
+      <div class="container">
+        <span class="text-muted"><b>Developed By: </b>Abhilash Kumar Pandey</span>
+      </div>
+    </footer>
       </div>
     )
   }
