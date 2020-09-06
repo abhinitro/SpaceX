@@ -123,7 +123,7 @@ class Home extends Component {
     let queryParam={};
     queryParam['land_success']=data;
 
-   if(typeof this.state.year =="string" &&  this.state.year !=""){
+   if(this.state.year !=""){
       url += '&launch_year=' + this.state.year;
       queryParam['launch_year']=this.state.year;
     }
@@ -148,7 +148,7 @@ class Home extends Component {
   url += '&launch_success=' + data;
   let queryParam={};
   queryParam['launch_success']=data;
-  if(typeof this.state.year =="string" &&  this.state.year !=""){
+  if(this.state.year !=""){
     url += '&launch_year=' + this.state.year;
     queryParam['launch_year']=this.state.year;
   }
